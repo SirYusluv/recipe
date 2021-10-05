@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ccc;
+  padding: 1rem;
+}
+
+.button-search {
+  border: 1px solid #00ff008c;
+}

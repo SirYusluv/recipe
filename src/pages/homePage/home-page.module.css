@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+}
+
+.recipe-list {
+  width: 30%;
+  background-color: white;
+}
+
+.recipe-info {
+  width: 70%;
+}

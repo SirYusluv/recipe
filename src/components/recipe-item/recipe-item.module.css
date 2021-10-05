@@ -1,0 +1,15 @@
+.img {
+  height: 10rem;
+  width: 10rem;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.container {
+  display: flex;
+}
+
+.container-sec {
+  display: flex;
+  flex-direction: column;
+}
