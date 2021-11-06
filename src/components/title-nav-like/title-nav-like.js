@@ -1,5 +1,3 @@
-import { Fragment } from "react";
-
 import svg from "../../sprite.svg";
 
 import styles from "./title-nav-like.module.css";

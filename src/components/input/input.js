@@ -6,6 +6,7 @@ const Input = (props) => {
       className={styles.input}
       placeholder={props.placeholder}
       type={props.type}
+      ref={props.inputRef}
     />
   );
 };
