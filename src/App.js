@@ -7,9 +7,17 @@ import SearchContext from "./store/search-context";
 import { useState } from "react/cjs/react.development";
 
 function App() {
-  const [searchResult, setSearchResult] = useState([]);
+  const [result, setSearchResult] = useState({
+    result: [],
+    isLoading: false,
+    errorMsg: null,
+  });
 
-  console.log("App: ", searchResult.length);
+  const searchResult = {
+    result: result.result.data?.recipes || [],
+    isLoading: result.isLoading,
+    errorMsg: result.errorMsg,
+  };
 
   return (
     <SearchContext.Provider value={{ searchResult, setSearchResult }}>

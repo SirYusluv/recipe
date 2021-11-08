@@ -1,0 +1,160 @@
+/* .info-hero, */
+.min-serve-container,
+.recipe-ing-container,
+.dir-container {
+  padding: 3rem 4rem;
+}
+
+.default-text {
+  margin-top: 2rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.recipe-info-container {
+  flex: 1;
+  background-color: #ccc;
+}
+
+.info-hero {
+  position: relative;
+  width: 100%;
+  height: 17rem;
+}
+
+.info-image {
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  width: 100%;
+  height: 17rem;
+}
+
+.publisher-text-container {
+  position: absolute;
+  background-color: #887f0077;
+  border-radius: 5px;
+  padding: 10px;
+  top: 100%;
+  right: 50%;
+  transform: rotateX(-20deg) rotateY(30deg) translate(50%);
+}
+
+.publisher-text {
+  color: white;
+  font-size: 2rem;
+}
+
+.min-serve-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(223, 223, 223);
+  align-items: center;
+}
+
+.min-serve-left {
+  display: flex;
+  /* width: 60%; */
+  flex: 0 0 40%;
+  justify-content: space-between;
+}
+
+.navi-container {
+  padding: 0;
+}
+
+.navi-svg {
+  margin-right: 5px;
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.navi-text {
+  margin: auto 0 auto 5px;
+}
+
+.bookmark-svg-container {
+  padding: 0.7rem;
+  background-color: #887f0077;
+  border-radius: 50%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.bookmark-svg {
+  fill: white;
+  height: 1rem;
+  width: 1rem;
+}
+
+.recipe-ing-container {
+  background-color: #ccc;
+}
+
+.recipe-info-title {
+  color: #887f0077;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.recipe-info-table {
+  border: 0;
+}
+
+.recipe-info-row {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.ing-items-container {
+  flex: 0 0 50%;
+}
+
+.ing-items-svg {
+  padding-right: 2px;
+  margin-left: 5px;
+  width: 1rem;
+  height: 1rem;
+}
+
+.ing-items-text {
+  padding-left: 2px;
+  margin-left: 0.7rem;
+  margin-right: 5px;
+  font-size: 0.8rem;
+}
+
+.dir-container {
+  background-color: rgb(223, 223, 223);
+}
+
+.dir-text {
+  text-align: center;
+  font-size: 1rem;
+}
+
+.dir-text span {
+  color: #887f0077;
+  font-weight: 1000;
+}
+
+.dir-btn {
+  padding: 0.7rem 1.5rem;
+  background-color: #887f0077;
+  color: white;
+  display: table;
+  margin: auto;
+  margin-top: 2rem;
+  border-radius: 100px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.dir-btn span {
+  margin-left: 5px;
+}

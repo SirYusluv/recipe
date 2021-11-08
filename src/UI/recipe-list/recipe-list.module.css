@@ -1,5 +1,12 @@
 .container {
   padding: 0;
+  margin-top: 1rem;
+}
+
+.default-text {
+  margin-top: 2rem;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .items-container {
@@ -7,7 +14,12 @@
 }
 
 .nav-container {
-  padding: 1rem 0 1rem 0;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+.copyright {
+  text-align: center;
+  margin: 2rem 0;
 }

@@ -7,5 +7,22 @@
 }
 
 .button-search {
-  border: 1px solid #00ff008c;
+  border: 1px solid #887f0077;
+}
+
+.navi-container {
+  cursor: pointer;
+}
+
+.navi-text {
+  display: inline-block;
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.navi-svg {
+  display: inline-block;
+  height: 1.3rem;
+  width: 1.3rem;
+  margin-right: 0.3rem;
 }

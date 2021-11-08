@@ -4,6 +4,7 @@ import { useState } from "react/cjs/react.development";
 import ButtonMain from "../../components/buttons/btn-main/btn-main";
 import Input from "../../components/input/input";
 import NaviTextIcon from "../../components/title-nav-like/title-nav-like";
+import useHttp from "../../hook/use-http";
 import SearchContext from "../../store/search-context";
 
 import styles from "./header.module.css";
@@ -15,7 +16,16 @@ const navTextMarkup = [];
 
 for (const title of Object.keys(navText)) {
   navTextMarkup.push(
-    <NaviTextIcon title={title} svgName={navText[title]} key={title} />
+    <NaviTextIcon
+      title={title}
+      svgName={navText[title]}
+      key={title}
+      styleList={{
+        itemContainer: styles["navi-container"],
+        itemSvg: styles["navi-svg"],
+        itemText: styles["navi-text"],
+      }}
+    />
   );
 }
 
@@ -24,27 +34,39 @@ const Header = () => {
   const history = useHistory();
   const searchRef = useRef();
   const searchCtx = useContext(SearchContext);
+  const [isLoading, errorMsg, result, sendRequest] = useHttp();
+  // console.log("HH: ", isLoading);
+
+  // const applyData = (r) => {
+  //   searchCtx.setSearchResult({
+  //     result: r.data.recipes,
+  //     isLoading,
+  //     errorMsg,
+  //   });
+
+  //   console.log(r.data.recipes);
+  // };
+
+  useEffect(() => {
+    setSearchWord(history.location.search.split("=")[1]);
+  }, []);
 
   useEffect(async () => {
     if (!searchedWord) return;
 
-    try {
-      console.log("Searching...");
-      const searchJSON = await fetch(
-        `https://forkify-api.herokuapp.com/api/v2/recipes?search=${searchedWord}`
-      );
-      const searchFetched = await searchJSON.json();
-      searchCtx.setSearchResult(searchFetched.data.recipes);
-      console.log("search done");
-    } catch (e) {
-      console.log(e.message);
-      console.log("Error fetching");
-    }
+    sendRequest({
+      url: `https://forkify-api.herokuapp.com/api/v2/recipes?search=${searchedWord}`,
+    });
   }, [searchedWord]);
+
+  useEffect(() => {
+    searchCtx.setSearchResult({ isLoading, errorMsg, result });
+  }, [isLoading, errorMsg, result]);
 
   const onSearchHandler = (e) => {
     e.preventDefault();
     const searchedValue = searchRef.current.value;
+    searchRef.current.value = "";
     history.push({ search: `query=${searchedValue}` });
     setSearchWord(searchedValue);
   };

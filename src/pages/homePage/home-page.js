@@ -10,10 +10,10 @@ const HomePage = (props) => {
 
   return (
     <div className={styles.container}>
-      <RecipeInfoContext value={hash}>
+      <RecipeInfoContext.Provider value={{ hash, setHash }}>
         <RecipeList style={styles["recipe-list"]} />
         <RecipeInfo style={styles["recipe-info"]} />
-      </RecipeInfoContext>
+      </RecipeInfoContext.Provider>
     </div>
   );
 };

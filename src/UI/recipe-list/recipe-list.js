@@ -1,34 +1,40 @@
-import { useContext } from "react";
-import { useState } from "react/cjs/react.development";
+import { useContext, useState } from "react";
+
 import ButtonNav from "../../components/buttons/btn-main/btn-nav/btn-nav";
 import RecipeListItem from "../../components/recipe-list-item/recipe-list-item";
+import RecipeInfoContext from "../../store/recipe-info-context";
 import SearchContext from "../../store/search-context";
+import Loading from "../../components/loading/loading";
+
 import styles from "./recipe-list.module.css";
 
 const RecipeList = (props) => {
   const searchCtx = useContext(SearchContext);
+  const hashCtx = useContext(RecipeInfoContext);
 
   const [currPage, setCurrPage] = useState(1);
 
   const recipeLists =
-    searchCtx.searchResult.slice((currPage - 1) * 10, currPage * 10) || [];
-  const hasNext = !!searchCtx.searchResult[currPage * 10 + 1];
+    searchCtx.searchResult.result.slice((currPage - 1) * 10, currPage * 10) ||
+    [];
+  const hasNext = !!searchCtx.searchResult.result[currPage * 10 + 1];
 
   const styleList = [styles.container];
   styleList.push(props.style || "");
 
   let recipeListsDom = (
-    <p>Search for a recipe (pizza) for here to be populated.</p>
+    <p className={styles["default-text"]}>
+      Search for a recipe (pizza) for here to be populated.
+    </p>
   );
 
   const getPage = (pageAction) => {
     if (pageAction === "prev") setCurrPage((page) => page - 1);
     if (pageAction === "next") setCurrPage((page) => page + 1);
-    console.log("CLICKED");
   };
 
   const itemClicked = (hash) => {
-    console.log(hash);
+    hashCtx.setHash(hash);
   };
 
   let navBtn = [
@@ -61,6 +67,14 @@ const RecipeList = (props) => {
     ));
   }
 
+  if (searchCtx.searchResult.isLoading) recipeListsDom = <Loading />;
+  if (searchCtx.searchResult.errorMsg)
+    recipeListsDom = (
+      <p className={styles["default-text"]}>
+        {searchCtx.searchResult.errorMsg}
+      </p>
+    );
+
   if (!(currPage > 1)) navBtn[0] = <div></div>;
   if (!hasNext) navBtn[1] = <div></div>;
 
@@ -68,6 +82,9 @@ const RecipeList = (props) => {
     <div className={styleList.join(" ")}>
       <div className={styles["items-container"]}>{recipeListsDom}</div>
       <div className={styles["nav-container"]}>{navBtn}</div>
+      <p className={styles.copyright}>
+        &copy; by SirYusluv, all rights reserved
+      </p>
     </div>
   );
 };
