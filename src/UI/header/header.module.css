@@ -1,17 +1,83 @@
 .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   background-color: #ccc;
   padding: 1rem;
+  position: relative;
+}
+
+.search-box {
+  padding: 5px 15px;
+  border: none;
+  margin-right: -10px;
 }
 
 .button-search {
   border: 1px solid #887f0077;
+  background-color: #887f00;
 }
 
 .navi-container {
   cursor: pointer;
+  z-index: 1;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: -webkit-transform 0.2s;
+  -o-transition: transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+}
+
+.bookmarks-chk:hover + .navi-container,
+.navi-container:hover {
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05);
+  fill: rgb(233, 233, 233);
+  color: rgb(233, 233, 233);
+}
+
+.bookmarks-chk:hover ~ .bookmark-container,
+.bookmarks-chk:checked ~ .bookmark-container {
+  opacity: 1;
+  z-index: 1;
+  -webkit-transform: translate(-100%);
+  -ms-transform: translate(-100%);
+  transform: translate(-100%);
+}
+
+.bookmark-container {
+  /* padding: 1rem; */
+  position: absolute;
+  background-color: white;
+  inset: 100% auto auto 100%;
+  /* text-align: center; */
+  min-width: 20rem;
+  min-height: 4rem;
+  opacity: 0;
+  z-index: -1;
+  -webkit-transform: translate(-100%, -100%);
+  -ms-transform: translate(-100%, -100%);
+  transform: translate(-100%, -100%);
+  -webkit-transition: all 0.1s;
+  -o-transition: all 0.1s;
+  transition: all 0.1s;
+}
+
+.check-box-style {
+  position: absolute;
+  width: 8.5rem;
+  height: 2rem;
+  opacity: 0;
+  z-index: 2;
 }
 
 .navi-text {

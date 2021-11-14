@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 import ButtonNav from "../../components/buttons/btn-main/btn-nav/btn-nav";
 import RecipeListItem from "../../components/recipe-list-item/recipe-list-item";
@@ -7,20 +8,30 @@ import SearchContext from "../../store/search-context";
 import Loading from "../../components/loading/loading";
 
 import styles from "./recipe-list.module.css";
+import { RECIPE_PER_PAGE } from "../../util/config";
 
 const RecipeList = (props) => {
   const searchCtx = useContext(SearchContext);
   const hashCtx = useContext(RecipeInfoContext);
+  const location = useLocation();
 
   const [currPage, setCurrPage] = useState(1);
 
   const recipeLists =
-    searchCtx.searchResult.result.slice((currPage - 1) * 10, currPage * 10) ||
-    [];
-  const hasNext = !!searchCtx.searchResult.result[currPage * 10 + 1];
+    searchCtx.searchResult.result.slice(
+      (currPage - 1) * RECIPE_PER_PAGE,
+      currPage * RECIPE_PER_PAGE
+    ) || [];
+  const hasNext =
+    !!searchCtx.searchResult.result[currPage * RECIPE_PER_PAGE + 1];
 
   const styleList = [styles.container];
   styleList.push(props.style || "");
+
+  useEffect(() => {
+    const hash = location.hash.slice(1);
+    hashCtx.setHash(hash);
+  }, []);
 
   let recipeListsDom = (
     <p className={styles["default-text"]}>
@@ -53,7 +64,7 @@ const RecipeList = (props) => {
   ];
 
   if (recipeLists.length) {
-    recipeListsDom = recipeLists.map((recipeItem, index) => (
+    recipeListsDom = recipeLists.map((recipeItem) => (
       <RecipeListItem
         imgLink={recipeItem.image_url}
         publisher={recipeItem.publisher}
@@ -62,7 +73,7 @@ const RecipeList = (props) => {
           itemClicked(recipeItem.id);
         }}
         title={recipeItem.title}
-        key={index}
+        key={recipeItem.id}
       />
     ));
   }

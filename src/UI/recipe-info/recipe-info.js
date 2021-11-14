@@ -1,19 +1,55 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import useHttp from "../../hook/use-http";
+
+import RecipeInfoContext from "../../store/recipe-info-context";
+import BookmarkContext from "../../store/bookmark-context";
+
+import Loading from "../../components/loading/loading";
 import NaviTextIcon from "../../components/title-nav-like/title-nav-like";
 
-import useHttp from "../../hook/use-http";
-import RecipeInfoContext from "../../store/recipe-info-context";
-
 import svg from "../../sprite.svg";
+
+import { BOOKMARK_STORAGE_NAME, BTN_OK } from "../../util/config";
+
 import styles from "./recipe-info.module.css";
-import { Link } from "react-router-dom";
-import Loading from "../../components/loading/loading";
+import AlertWindow from "../alert-window/alert-window";
+import AlertContext from "../../store/alert-context";
+
+let bookmarkList = [];
 
 const RecipeInfo = (props) => {
   const [recipeInfo, setRecipeInfo] = useState({});
+  const [isBookmark, setIsBookmark] = useState(false);
+  const [alertDialogMsg, setAlertDialogMsg] = useState(null);
+  const bookmarkCtx = useContext(BookmarkContext);
   const hashCtx = useContext(RecipeInfoContext);
-  const [isLoading, errMsg, result, sendRequest] = useHttp();
+  const alertCtx = useContext(AlertContext);
+  const [isLoading, errMsg, result, sendRequest, errHandledHandler] = useHttp();
+
+  useEffect(() => {
+    // fetch every bookmark in local storage
+    (async () => {
+      const bookmarkItems = await JSON.parse(
+        localStorage.getItem(BOOKMARK_STORAGE_NAME)
+      );
+      bookmarkItems && (bookmarkList = bookmarkItems);
+      bookmarkList.length && bookmarkCtx.setBookmarkItems(bookmarkList);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (alertCtx.isShown && errMsg) {
+      setAlertDialogMsg(
+        <AlertWindow
+          message={errMsg}
+          btnTxt1={BTN_OK}
+          btnClick1={errHandledHandler}
+        />
+      );
+    } else {
+      setAlertDialogMsg(null);
+    }
+  }, [alertCtx.isShown]);
 
   useEffect(() => {
     if (!hashCtx.hash) return;
@@ -25,6 +61,32 @@ const RecipeInfo = (props) => {
   useEffect(() => {
     result.data && setRecipeInfo(result.data.recipe);
   }, [result]);
+
+  useEffect(() => {
+    if (!bookmarkList.length) return;
+    const itemFound = bookmarkList.find((item) => item.id === recipeInfo.id);
+    setIsBookmark(!!itemFound);
+  }, [recipeInfo]);
+
+  const bookmarkClickHandler = () => {
+    const item = bookmarkList.find((item) => item.id === recipeInfo.id);
+
+    if (item) {
+      bookmarkList = bookmarkList.filter((i) => item.id !== i.id);
+    } else {
+      // storage should not contain more than 5 element
+      if (bookmarkList.length <= 5) {
+        bookmarkList = [...bookmarkList, recipeInfo];
+      } else {
+        return alert("Remove some bookmark to add more");
+      }
+    }
+
+    const itemFound = bookmarkList.find((i) => i.id === recipeInfo.id);
+    setIsBookmark(!!itemFound);
+    bookmarkCtx.setBookmarkItems(bookmarkList);
+    localStorage.setItem(BOOKMARK_STORAGE_NAME, JSON.stringify(bookmarkList));
+  };
 
   let toRender = (
     <p className={styles["default-text"]}>Nothing to show here yet.</p>
@@ -70,8 +132,16 @@ const RecipeInfo = (props) => {
             />
           </div>
 
-          <div className={styles["bookmark-svg-container"]}>
-            <svg className={styles["bookmark-svg"]}>
+          <div
+            onClick={bookmarkClickHandler}
+            className={styles["bookmark-svg-container"]}
+          >
+            <svg
+              className={[
+                styles["bookmark-svg"],
+                isBookmark ? styles["is-bookmark"] : styles["not-bookmark"],
+              ].join(" ")}
+            >
               <use xlinkHref={`${svg}#bookmark`} />
             </svg>
           </div>
@@ -142,10 +212,16 @@ const RecipeInfo = (props) => {
   }
 
   if (isLoading) toRender = <Loading />;
-  if (errMsg)
-    toRender = <p className={styles["default-text"]}>Error fetching data.</p>;
+  if (errMsg) {
+    toRender = <p className={styles["default-text"]}>{errMsg}</p>;
+  }
 
-  return <div className={styles["recipe-info-container"]}>{toRender}</div>;
+  return (
+    <Fragment>
+      {alertDialogMsg && alertDialogMsg}
+      <div className={styles["recipe-info-container"]}>{toRender}</div>
+    </Fragment>
+  );
 };
 
 export default RecipeInfo;

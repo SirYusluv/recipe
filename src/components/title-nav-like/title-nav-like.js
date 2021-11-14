@@ -8,7 +8,10 @@ const NaviTextIcon = (props) => {
   containerStyle.push(props.styleList?.itemContainer || "");
 
   return (
-    <div className={containerStyle.join(" ")}>
+    <div
+      onClick={props.clickHandler || ""}
+      className={containerStyle.join(" ")}
+    >
       <svg className={props.styleList?.itemSvg || ""}>
         <use xlinkHref={`${svg}#${props.svgName}`} />
       </svg>

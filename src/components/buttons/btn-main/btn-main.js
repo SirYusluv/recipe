@@ -11,7 +11,8 @@ const ButtonMain = (props) => {
     <input
       className={btnStyles.join(" ")}
       type={props.btnType || "button"}
-      text={props.btnText}
+      value={props.btnText}
+      onClick={props.click || ""}
     />
   );
 };

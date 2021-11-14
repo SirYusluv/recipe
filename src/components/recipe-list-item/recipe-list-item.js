@@ -13,7 +13,7 @@ const RecipeListItem = (props) => {
         <h2>{props.publisher}</h2>
         <p>
           {props.title.length > 50
-            ? `${props.title.slice(0, 50)}...`
+            ? `${props.title.slice(0, 30)}...`
             : props.title.slice(0, 20)}
         </p>
       </div>

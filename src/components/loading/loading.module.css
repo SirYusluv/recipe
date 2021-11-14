@@ -2,6 +2,8 @@
 .container {
   height: 15px;
   /* width: 105px; */
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   position: relative;
   /* background-color: red; */
@@ -12,6 +14,7 @@
   height: 15px;
   border-radius: 50%;
   background-color: #887f0077;
+  -webkit-animation: move 500ms linear 0ms infinite;
   animation: move 500ms linear 0ms infinite;
   margin-right: 30px;
 }
@@ -20,6 +23,7 @@ circle:first-child {
   position: absolute;
   top: 0;
   left: 0;
+  -webkit-animation: grow 500ms linear 0ms infinite;
   animation: grow 500ms linear 0ms infinite;
 }
 
@@ -31,22 +35,50 @@ circle:last-child {
   animation: grow 500ms linear 0s infinite reverse;
 }
 
-@keyframes grow {
+@-webkit-keyframes grow {
   from {
+    -webkit-transform: scale(0, 0);
     transform: scale(0, 0);
     opacity: 0;
   }
   to {
+    -webkit-transform: scale(1, 1);
     transform: scale(1, 1);
     opacity: 1;
   }
 }
 
-@keyframes move {
+@keyframes grow {
   from {
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes move {
+  from {
+    -webkit-transform: translateX(0px);
     transform: translateX(0px);
   }
   to {
+    -webkit-transform: translateX(45px);
+    transform: translateX(45px);
+  }
+}
+
+@keyframes move {
+  from {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+  to {
+    -webkit-transform: translateX(45px);
     transform: translateX(45px);
   }
 }

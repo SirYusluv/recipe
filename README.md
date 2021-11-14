@@ -1,3 +1,3 @@
 # RECIPE APP
 
-Still building
+Done building, will be hosted soon.

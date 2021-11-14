@@ -1,9 +1,15 @@
-import { useReducer } from "react";
+import { useContext, useEffect, useReducer } from "react";
+import AlertContext from "../store/alert-context";
+import { MSG_ERR_FETCH_DATA } from "../util/config";
 
 const LOADING_STATE = 1;
 const ERROR_STATE = -1;
 
-const initialState = { isLoading: false, result: [], errorMsg: null };
+const initialState = {
+  isLoading: false,
+  result: [],
+  errorMsg: null,
+};
 
 const currStateReducer = (_, action) => {
   switch (action?.type || "") {
@@ -14,17 +20,31 @@ const currStateReducer = (_, action) => {
         result: action.payload[1],
       };
     case ERROR_STATE:
-      return { isLoading: false, result: [], errorMsg: action.payload };
+      return {
+        isLoading: false,
+        result: [],
+        errorMsg: action.payload[0],
+      };
     default:
       return initialState;
   }
 };
 
 const useHttp = () => {
+  const alertCtx = useContext(AlertContext);
   const [currState, dispatchCurrState] = useReducer(
     currStateReducer,
     initialState
   );
+
+  useEffect(() => {
+    if (!currState.errorMsg) return;
+    alertCtx.setIsShown(true);
+  }, [currState.errorMsg]);
+
+  const errHandledHandler = () => {
+    alertCtx.setIsShown(false);
+  };
 
   const sendRequest = async (requestConfig) => {
     try {
@@ -36,7 +56,7 @@ const useHttp = () => {
         body: JSON.stringify(requestConfig.body) || null,
       });
 
-      if (!resultJSON.ok) throw new Error("Error fetching data");
+      if (!resultJSON.ok) throw new Error(MSG_ERR_FETCH_DATA);
 
       const resultFetched = await resultJSON.json();
       // React API context is actually headach, i had to change so much lines of codes
@@ -48,7 +68,7 @@ const useHttp = () => {
         payload: [false, resultFetched],
       });
     } catch (e) {
-      dispatchCurrState({ type: ERROR_STATE, payload: e.message });
+      dispatchCurrState({ type: ERROR_STATE, payload: [e.message] });
     }
   };
 
@@ -57,6 +77,7 @@ const useHttp = () => {
     currState.errorMsg,
     currState.result,
     sendRequest,
+    errHandledHandler,
   ];
 };
 
