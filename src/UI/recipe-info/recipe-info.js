@@ -12,6 +12,7 @@ import svg from "../../sprite.svg";
 import {
   BOOKMARK_STORAGE_NAME,
   BTN_OK,
+  MAX_TO_BOOKMARK,
   MSG_MAX_BOOKMARK,
 } from "../../util/config";
 
@@ -81,7 +82,7 @@ const RecipeInfo = (props) => {
       bookmarkList = bookmarkList.filter((i) => item.id !== i.id);
     } else {
       // storage should not contain more than 5 element
-      if (bookmarkList.length < 5) {
+      if (bookmarkList.length < MAX_TO_BOOKMARK) {
         bookmarkList = [...bookmarkList, recipeInfo];
       } else {
         // alert("Remove some bookmark to add more");

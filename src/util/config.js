@@ -7,3 +7,4 @@ export const MSG_ADDRECIPE_ALERT =
 export const BTN_OK = "Ok";
 export const BTN_CANCEL = "Cancel";
 export const RECIPE_PER_PAGE = 10;
+export const MAX_TO_BOOKMARK = 5;
