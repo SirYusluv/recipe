@@ -75,7 +75,7 @@ const RecipeInfo = (props) => {
       bookmarkList = bookmarkList.filter((i) => item.id !== i.id);
     } else {
       // storage should not contain more than 5 element
-      if (bookmarkList.length <= 5) {
+      if (bookmarkList.length < 5) {
         bookmarkList = [...bookmarkList, recipeInfo];
       } else {
         return alert("Remove some bookmark to add more");
