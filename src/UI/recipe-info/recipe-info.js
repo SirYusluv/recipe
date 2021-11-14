@@ -9,7 +9,11 @@ import NaviTextIcon from "../../components/title-nav-like/title-nav-like";
 
 import svg from "../../sprite.svg";
 
-import { BOOKMARK_STORAGE_NAME, BTN_OK } from "../../util/config";
+import {
+  BOOKMARK_STORAGE_NAME,
+  BTN_OK,
+  MSG_MAX_BOOKMARK,
+} from "../../util/config";
 
 import styles from "./recipe-info.module.css";
 import AlertWindow from "../alert-window/alert-window";
@@ -21,6 +25,7 @@ const RecipeInfo = (props) => {
   const [recipeInfo, setRecipeInfo] = useState({});
   const [isBookmark, setIsBookmark] = useState(false);
   const [alertDialogMsg, setAlertDialogMsg] = useState(null);
+  const [bookmarkErrBox, setBookmarkErrBox] = useState(null);
   const bookmarkCtx = useContext(BookmarkContext);
   const hashCtx = useContext(RecipeInfoContext);
   const alertCtx = useContext(AlertContext);
@@ -38,16 +43,17 @@ const RecipeInfo = (props) => {
   }, []);
 
   useEffect(() => {
-    if (alertCtx.isShown && errMsg) {
+    if (alertCtx.isShown && (errMsg || bookmarkErrBox)) {
       setAlertDialogMsg(
         <AlertWindow
-          message={errMsg}
+          message={errMsg || MSG_MAX_BOOKMARK}
           btnTxt1={BTN_OK}
           btnClick1={errHandledHandler}
         />
       );
     } else {
       setAlertDialogMsg(null);
+      setBookmarkErrBox(null);
     }
   }, [alertCtx.isShown]);
 
@@ -78,7 +84,9 @@ const RecipeInfo = (props) => {
       if (bookmarkList.length < 5) {
         bookmarkList = [...bookmarkList, recipeInfo];
       } else {
-        return alert("Remove some bookmark to add more");
+        // alert("Remove some bookmark to add more");
+        alertCtx.setIsShown(true);
+        setBookmarkErrBox(true);
       }
     }
 

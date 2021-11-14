@@ -9,6 +9,7 @@ There are some animation glitch on chrome
 ## Some features used:
 
 - React features like Context API, React Hooks
+- React Portal
 - Custom Hooks
 - CheckBox Hack (HTML CSS for **click listener** instead of JS)
 - And some others...
